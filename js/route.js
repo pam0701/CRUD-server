@@ -1,7 +1,6 @@
 // @ts-check
 
 const http = require('http');
-const { routes } = require('./route');
 // const { isConstructorDeclaration } = require('typescript');
 /**
  * @typedef Post
@@ -41,23 +40,6 @@ const server = http.createServer((req, res) => {
     id = parseInt(urlArr[2], 10);
   }
 
-  const route = routes.find(
-    (_route) => req.url && req.method && _route.method === req.method
-  );
-
-  if (!route) {
-    console.log('해당 API를 찾을 수 없습니다.');
-
-    res.statusCode = 404;
-    res.end('Not Found');
-  } else {
-    const result = route.callback();
-
-    console.log(result);
-
-    res.statusCode = result.statusCode;
-    res.end(JSON.stringify(result.body));
-  }
   /**
    * GET /posts           목록 가져오기
    * GET /posts/:id       특정 글 내용 가져오기
@@ -66,7 +48,7 @@ const server = http.createServer((req, res) => {
    * DELETE /posts/:id    특정 글 삭제하기
    */
 
-  /*   if (req.url === '/posts' && req.method === 'GET') {
+  if (req.url === '/posts' && req.method === 'GET') {
     const result = {
       posts: posts.map((post) => ({
         id: post.id,
@@ -145,5 +127,23 @@ const server = http.createServer((req, res) => {
 const PORT = 4000;
 server.listen(PORT, () => {
   console.log(`해당 서버는 ${PORT}에서 작동 중입니다.`);
-});*/
 });
+
+const routes = [
+  {
+    url: '/posts',
+    method: 'GET',
+    callback: () => ({
+      statusCode: 200,
+      body: {
+        posts: posts.map((post) => ({ id: post.id, title: post.title })),
+        totalCount: posts.length,
+      },
+    }),
+  },
+  //특정 id의 블로그 글을 가져오는 API
+];
+
+module.exports = {
+  routes,
+};

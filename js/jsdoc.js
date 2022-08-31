@@ -11,11 +11,11 @@
 //     return `내 이름은 ${name} 이고 나이는 ${age} 입니다`;
 // }
 // /** @type {string} */
-// const test ='bogus';
+// const test ='klaus';
 
 // console.log(hello('hello', 38));
 
-// /** 
+// /**
 //  * @typedef Post
 //  * @property {number}id
 //  * @property {string} title
@@ -29,11 +29,10 @@
 //     content: '강지훈',
 // };
 
-
 const arr = [10, 20, 30, 40, 50];
 
-const result = arr.find(function(element){
-    return element === 20;
+const result = arr.find(function (element) {
+  return element === 20;
 });
 
 console.log(result);

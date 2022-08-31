@@ -18,9 +18,6 @@
 // // // porsche.drive();
 // // // toyota.drive();
 
-
-
-
 // // // class 활용
 // // class Car {
 // //     constructor(brand, color) {
@@ -58,7 +55,6 @@
 // // const hyundai = new Car('hyundai', 'blue');
 // // // hyundai.showSpec();
 
-
 // // // const porsche = new Car('porsche', 'black');
 // // // const toyota = new Car('toyota', 'silver');
 
@@ -74,19 +70,13 @@
 // // // porsche.drive();
 // // // toyota.drive();
 
-
-
-
-
-
 // // // let userId = '';
 
 // // // const promise = new Promise((resolve, reject) =>{
 // // //     console.log('프로미스 내부의 코드는 바로 실행 됩니다');
 // // //     setTimeout(()=>{
-        
-       
-// // //         if(userId === 'bogus'){
+
+// // //         if(userId === 'klaus'){
 // // //             resolve(userId);
 // // //         }else{
 // // //             reject(new Error('서버 통신이 원할하지 않습니다.'));
@@ -104,15 +94,14 @@
 // // //     .finally(() => {
 // // //     console.log('프로미스 시퀀스가 끝났습니다.');
 // // //     });
-    
+
 // // // console.log('1');
 // // // setTimeout(()=> {
 // // //     console.log('callback');
 // // // }, 1000);
 // // // console.log('2');
 // // //  */
-// // // //disable esint
-
+// // // //disable eslint
 
 // // // //callback 코드가 없으면 id를 정확하게 입력해도 로그인실패로 응답됨
 // // // let id = prompt ('아이디를 입력하세요!');
@@ -120,16 +109,15 @@
 
 // // // console.log('로그인 시도');
 // // // setTimeout(function cb1(){
-// // //     userId='bogus';
+// // //     userId='klaus';
 // // //     console.log('아이디 정보 획득 완료!');
 
-
 // // // if(id ===userId) {
-// // //     console.log('로그인 성공');  
+// // //     console.log('로그인 성공');
 // // // } else{
 // // //     console.log('로그인 실패');
 // // // }
-// // // }, 2000);  
+// // // }, 2000);
 
 // //es5 버전
 // // function Car(brand, color) {
@@ -156,40 +144,39 @@
 // //     ElecCar.prototype.constructor = ElecCar;
 // //     const tesla = new ElecCar('tesla', 'white', 'electricity');
 // //     tesla.drive();
-    
 
 //     class Shape{
 //     constructor(width,height){
 //         this.width=width;
 //         this.height=height;
 //     }
- 
+
 //     getArea(){
 //         return this.width * this.height;
 //     };
 // }
-        
+
 //     class Rectangle extends Shape{
 //         constructor(width, height){
 //         super(width, height);
 //         }
-//     } 
+//     }
 //     class Triangle extends Shape{
 //         constructor(width, height){
 //         super(width, height);
 //         }
-    
+
 //     getArea(){
 //         return this.width * this.height / 2;
 //     };
 // }
-    
+
 //     class Circle extends Shape{
 //         constructor(width, height, radius){
 //         super(width, height);
 //         this.radius=radius;
 //         }
-    
+
 //     getArea(){
 //         return 3.14 *this.radius **2;
 //     }
@@ -203,5 +190,3 @@
 //         shape.getArea(),
 //         rectangle.getArea(),
 //         );
-
-   
