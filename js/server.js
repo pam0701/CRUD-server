@@ -1,6 +1,7 @@
 // @ts-check
 
 const http = require('http');
+const { mainModule } = require('process');
 const { routes } = require('./route');
 // const { isConstructorDeclaration } = require('typescript');
 /**
@@ -29,35 +30,72 @@ const posts = [
   },
 ];
 
-// 서버를 정의 하는 코드
+/* --------------Start Server define------------------*/
 const server = http.createServer((req, res) => {
   console.log('REQ URL', req.url);
 
   const urlArr = req.url ? req.url.split('/') : [];
-  let id = -1;
+  let id;
+
   console.log(urlArr);
 
   if (urlArr.length > 2) {
     id = parseInt(urlArr[2], 10);
-  }
-
-  const route = routes.find(
-    (_route) => req.url && req.method && _route.method === req.method
-  );
-
-  if (!route) {
-    console.log('해당 API를 찾을 수 없습니다.');
-
-    res.statusCode = 404;
-    res.end('Not Found');
   } else {
-    const result = route.callback();
-
-    console.log(result);
-
-    res.statusCode = result.statusCode;
-    res.end(JSON.stringify(result.body));
+    id = undefined;
   }
+
+  /* --------------End Server define------------------*/
+  async function main() {
+    const route = routes.find(
+      (_route) =>
+        req.url &&
+        req.method &&
+        req.url.search(_route.url) !== -1 &&
+        _route.method === req.method &&
+        typeof id === _route.id //typeof id는 console로 찍어보면 id가 존재하면 number라고 나오고 없으면 undefined로 출력됨
+    );
+
+    if (!route) {
+      console.log('해당 API를 찾을 수 없습니다.');
+
+      res.statusCode = 404;
+      res.end('Not Found');
+    } else {
+      let newPost;
+
+      if (req.method === 'POST') {
+        newPost = await new Promise((resolve, reject) => {
+          req.setEncoding('utf-8');
+          req.on('data', (data) => {
+            resolve(JSON.parse(data));
+          });
+        });
+      }
+
+      const result = await route.callback(id, newPost); //const result = await route.callback();라고 쳐도 왜 아이디에 맞는 값이 나오지?
+      console.log(result);
+
+      res.statusCode = result.statusCode;
+      res.end(JSON.stringify(result.body));
+
+      /* promise
+        .then((data) => {
+          newPost = JSON.parse(data);
+          const result = route.callback(id, newPost); //const result = await route.callback();라고 쳐도 왜 아이디에 맞는 값이 나오지?
+        console.log(result);
+
+          res.statusCode = result.statusCode;
+          res.end(JSON.stringify(result.body));
+        })
+        .catch(() => {
+          res.statusCode = 404;
+          res.end("There's no data");
+        });*/
+    }
+  }
+  main();
+
   /**
    * GET /posts           목록 가져오기
    * GET /posts/:id       특정 글 내용 가져오기

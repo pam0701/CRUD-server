@@ -28,7 +28,7 @@ const posts = [
   },
 ];
 
-// 서버를 정의 하는 코드
+/* --------------Start Server define------------------*/
 const server = http.createServer((req, res) => {
   console.log('REQ URL', req.url);
 
@@ -39,6 +39,7 @@ const server = http.createServer((req, res) => {
   if (urlArr.length > 2) {
     id = parseInt(urlArr[2], 10);
   }
+  /* --------------End Server define------------------*/
 
   /**
    * GET /posts           목록 가져오기
@@ -133,7 +134,8 @@ const routes = [
   {
     url: '/posts',
     method: 'GET',
-    callback: () => ({
+    id: 'undefined',
+    callback: async () => ({
       statusCode: 200,
       body: {
         posts: posts.map((post) => ({ id: post.id, title: post.title })),
@@ -142,6 +144,50 @@ const routes = [
     }),
   },
   //특정 id의 블로그 글을 가져오는 API
+  {
+    url: '/posts',
+    method: 'GET',
+    id: 'number',
+    callback: async (postId) => {
+      const id = postId;
+      if (!id) {
+        return {
+          statusCode: 404,
+          body: 'Not Found',
+        };
+      }
+      const result = posts.find((post) => post.id === id);
+
+      if (!result) {
+        return {
+          statusCode: 404,
+          body: 'Id Not Found',
+        };
+      }
+
+      return {
+        statusCode: 200,
+        body: result,
+      };
+    },
+  },
+  //새로운 글을 쓰는 API
+  {
+    url: '/posts',
+    method: 'POST',
+    id: 'undefined',
+    callback: async (id, newPost) => {
+      posts.push({
+        id: posts[posts.length - 1].id + 1,
+        title: newPost.title,
+        content: newPost.content,
+      });
+      return {
+        statusCode: 200,
+        body: 'post is uploaded',
+      };
+    },
+  },
 ];
 
 module.exports = {
